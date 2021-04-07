@@ -1,0 +1,87 @@
+.container {
+    display: grid;
+    position: absolute;
+    background-color: grey;
+}
+
+.container > .controlUnit {
+    align-self: center;
+    display: inline-grid;
+    grid-template-columns: 25px auto 50px 25px;
+    grid-template-rows: 25px 25px;
+}
+
+.controlUnit > .jackInput {
+    align-self: center;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: yellow;
+}
+
+.controlUnit > .jackOutput {
+    grid-column: 4;
+    grid-row: 1;
+}
+
+.controlUnit > .label {
+    align-self: center;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.controlUnit > .textInput {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+}
+
+.controlUnit > .slider {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 2;
+}
+
+.container > .containerMenubar {
+    align-self: center;
+    display: grid;
+    grid-template-columns: 25px, auto, 25px, 25px, auto, 25px;
+    grid-template-rows: 25px;
+    padding-bottom: 20px;
+}
+
+.containerMenubar > .delete {
+    grid-column: 6;
+    height: 25px;
+    width: 25px;
+    background-color: red;
+    border-radius: 50%;
+    justify-self: end;
+}
+
+.containerMenubar > .drag {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.containerMenubar > .stop {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    background-color: red;
+}
+
+.containerMenubar > .play {
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    background-color: green;
+}
+
