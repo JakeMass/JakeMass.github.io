@@ -568,6 +568,8 @@ window.onload = function () {
 
     sequenceClear = document.getElementById("clearButton");
     sequenceClear.onclick = () => {
+
+        context.resume();
         sequence.forEach(function (noteNumber) {
             synthesizer.noteOff(noteNumber);
         });
@@ -584,8 +586,6 @@ window.onload = function () {
         parseSequence(textInput.value);
         playSequence();
     }
-
-    context.resume();
 }
 
 function onMIDIInit(midiAccess) {
@@ -672,12 +672,12 @@ function playSequence() {
             seqIndex = seqIndex == seqLastID ? (seqIndex + 1) % sequence.length : seqIndex;
             seqLastID = seqIndex;
 
-            if(sequence[seqIndex] != 0){
+            if (sequence[seqIndex] != 0) {
                 synthesizer.noteOn(sequence[seqIndex]);
             }
         }
         else {
-            if(sequence[sequenceID] != 0){
+            if (sequence[sequenceID] != 0) {
                 synthesizer.noteOn(sequence[sequenceID]);
             }
         }
@@ -766,20 +766,20 @@ function parseSequence(textSequence) {
         noteLetter = noteInfo.split(':')[0];
         multiplier = noteInfo.split(':')[1];
 
-        if(!multiplier){
+        if (!multiplier) {
             multiplier = 1;
         }
 
         if (noteLetter == 'o') {
-            for(var i = 0; i < multiplier; i++){
+            for (var i = 0; i < multiplier; i++) {
                 sequence.push(0);
             }
         }
         else {
-            for(var i = 0; i < multiplier; i++){
+            for (var i = 0; i < multiplier; i++) {
                 sequence.push(midiNoteNumbers.indexOf(noteLetter) + midiNumberOffset);
             }
-            
+
         }
     });
 
