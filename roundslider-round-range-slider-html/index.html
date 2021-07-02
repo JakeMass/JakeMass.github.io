@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery roundSlider Plugin Example </title>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- roundSlider CSS -->
+    <link rel="stylesheet" href="css/roundslider.min.css">
+    <!-- roundSlider JS -->
+    <script src="js/roundslider.min.js"></script>
+	<!-- Demo CSS -->
+	<link rel="stylesheet" href="css/demo.css">
+    
+        <style>
+        h1 span {
+            font-size: 0.6em;
+        }
+        .types {
+          display: inline-block;
+          padding: 10px 30px;
+          border: 1px dotted;
+          margin-right: 20px;
+          overflow: hidden;
+        }
+            
+    @media only screen and (min-width: 1024px){ 
+        .container {
+          height: 180px;
+          width: 400px;
+        }
+        .container > div {
+          float: left;
+        }
+        .control {
+            margin-right: 70px;
+        }
+                     }
+    </style>
+</head>
+ <body>
+	<header class="intro">
+	<h1> jQuery roundSlider Plugin Example </h1>
+	<p> The roundSlider allows the user to select a value or range of values.</p>
+	<p> Written in HTML, CSS, JavaScript (jQuery)... </p>
+	<div class="action">
+	<a href="https://www.codehim.com/text-input/round-range-slider-html-control-in-jquery/" title="Back to download and tutorial page" class="btn back">Back to Tutorial</a>
+	<a href="https://github.com/soundar24/roundSlider" title="View, Fork or Star on GitHub" class="btn github">View on GitHub</a>
+	</div>
+	</header>
+<main>
+ <article>
+	<p>The following is the example of round range slider html. </p>
+   <div class="types">
+        <h3>Slider Types</h3>
+        <div class="container">
+            <div class="control">
+                <div id="type"></div>
+            </div>
+            <div class="options">
+                <select id="Select1" onchange="sliderTypeChanged(this)" style="float: left;">
+                    <option>default</option>
+                    <option>min-range</option>
+                    <option>range</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="types">
+        <h3>Circle Shapes</h3>
+        <div class="container">
+            <div class="control">
+                <div id="shape"></div>
+            </div>
+            <div class="options">
+                <select id="type1" onchange="sliderShapeChanged(this)" style="float: left;">
+                    <option>full</option>
+                    <option>quarter-top-left</option>
+                    <option>quarter-top-right</option>
+                    <option>quarter-bottom-right</option>
+                    <option>quarter-bottom-left</option>
+                    <option>half-top</option>
+                    <option>half-bottom</option>
+                    <option>half-left</option>
+                    <option>half-right</option>
+                    <option>pie</option>
+                    <option>custom-half</option>
+                    <option>custom-quarter</option>
+                </select>
+            </div>
+        </div>
+    </div> </article>
+</main>
+
+<footer class="credit">Author: Soundar - Distributed By: <a title="Awesome web design code & scripts" href="https://www.codehim.com?source=demo-page" target="_blank">CodeHim</a></footer>
+
+<script>
+        $(document).ready(function () {
+            $("#type").roundSlider({
+                value: 45,
+            });
+            $("#shape").roundSlider({
+                value: 60,
+                sliderType: "min-range"
+            });
+        });
+        function sliderTypeChanged(e) {
+            $("#type").roundSlider({ sliderType: e.value });
+        }
+        function sliderShapeChanged(e) {
+            var options = { circleShape: e.value };
+            if (e.value == "pie") options["startAngle"] = 0;
+            else if (e.value == "custom-quarter" || e.value == "custom-half") options["startAngle"] = 45;
+            $("#shape").roundSlider(options);
+        }
+</script>
+
+ </body>
+</html>

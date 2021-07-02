@@ -1,24 +1,290 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Document</title>
-  <script src="container.js" defer></script>
-  <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="roundSlider-1.6.1\src\roundslider.css">
+    <script src="roundSlider-1.6.1\src\roundslider.js"></script>
+
+    <script src="app.js" defer></script>
+    <script src="synth.js" defer></script>
+    <script src="guistuff.js" defer></script>
 </head>
+
 <body>
-  <button onclick="createNewContainer()">New Container</button>
-  <select name="waveform" id="waveformPicker">
-    <option value="sine">Sine</option>
-    <option value="triangle">Triangle</option>
-    <option value="square">Square</option>
-  </select>
-  <button onclick="createNewSynth()">New Synth</button>
-  <input type="range" id="masterGainSlider" min="0" max=".6" step=".01" oninput="setMasterGain()">
-  <label for="masterGainSlider">Volume</label>
-  
+    <div class="mainCanvas">
+        <div class="synthController">
+            <div class="header">
+                <select id="waveformSelect">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+                <label id="waveformSelectLabel" for="waveformSelect">Waveform</label>
+                <div class="synthKnob" id="portamentoSlider"></div>
+                <div id="portamentoSliderLabel">Portamento</div>
+            </div>
+            <div id="synthSliderSection">
+                <div class="label">Attack</div>
+                <div class="synthKnob" id="attackSlider"></div>
+
+                <div class="label">Decay Max Value</div>
+                <div class="synthKnob" id="decayGainSlider"></div>
+
+                <div class="label">Decay Time</div>
+                <div class="synthKnob" id="decayTimeSlider"></div>
+
+                <div class="label">Sustain Level</div>
+                <div class="synthKnob" id="sustainGainSlider"></div>
+
+                <div class="label">Release</div>
+                <div class="synthKnob" id="releaseSlider"></div>
+            </div>
+        </div>
+        <div class="filterController">
+            <div class="header" id="filterHeader">
+                <div id="filterCaption">Filter</div>
+                <div class="label">Filter Type:</div>
+                <select id="filterSelect">
+                    <option value="lowpass">Lowpass</option>
+                    <option value="highpass">Highpass</option>
+                    <option value="notch">Notch</option>
+                </select>
+                <div class="label" id="lfoTypeLabel">LFO Type:</div>
+                <select id="filterLFOSelect">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+            </div>
+            <div class="label">Frequency</div>
+            <div class="filterKnob" id="filterFreqSlider"></div>
+
+            <div class="label">Q</div>
+            <div class="filterKnob" id="filterQSlider"></div>
+
+            <div class="labelLFO">LFO Speed</div>
+            <div class="filterKnob" id="filterLFOSpeedSlider"></div>
+
+            <div class="labelLFO">LFO Gain</div>
+            <div class="filterKnob" id="filterLFOGainSlider"></div>
+        </div>
+        <div class="effectsController">
+            <div class="header">
+                <h1>FX</h1>
+                <div id="reverbHeader">
+
+                    <div id="reverbSelectLabel">Reverb Type:</div>
+                    <select id="reverbSelect">
+                        <option value="0">Reverb 1</option>
+                        <option value="1">Reverb 2</option>
+                        <option value="2">Reverb 3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="driveController">
+                <div id="driveGainKnobLabel">Drive</div>
+                <div class="effectsKnob" id="driveGainSlider"></div>
+            </div>
+            <div class="delayController">
+                <div id="delayTimeKnobLabel">Delay Time</div>
+                <div class="effectsKnob" id="delayTimeKnob"></div>
+
+                <div id="delayFBTimeKnobLabel">Delay Feedb.</div>
+                <div class="effectsKnob" id="delayFBTimeKnob"></div>
+
+                <div id="delayGainKnobLabel">Delay Gain</div>
+                <div class="effectsKnob" id="delayGainKnob"></div>
+            </div>
+            <div class="reverbController">
+                <div id="reverbKnobLabel">Reverb</div>
+                <div class="effectsKnob" id="reverbKnob"></div>
+            </div>
+        </div>
+        <div class="modController">
+            <div id="modHeader">
+                <div class="label" id="modWavLabel">Waveform</div>
+                <div class="label" id="modFreqLabel">Frequency</div>
+                <div class="label" id="modGainLabel">Gain</div>
+                <div class="label" id="modDestLabel">Destination</div>
+            </div>
+            <div class="modRow">
+                <select class="modTypeSelect" id="modTypeSelect1">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+                <div class="modFreqKnob" id="modFreqKnob1"></div>
+                <div class="modGainKnob" id="modGainKnob1"></div>
+                <select class="modDestSelect" id="modSelect1">
+                    <option value="none">No Connection</option>
+                    <option value="oscDetune">Synth: Detune</option>
+                    <option value="oscGain">Synth: Gain</option>
+                    <option value="filterFreq">Filter: Frequency</option>
+                    <option value="filterQ">Filter: Q</option>
+                    <option value="filterLFOSpeed">Filter LFO: Speed</option>
+                    <option value="filterLFOGain">Filter LFO: Gain</option>
+                    <option value="delayTime">FX: Delay Time</option>
+                    <option value="reverb">FX: Reverb</option>
+                    <option value="modFreq2">Mod 2: Frequency</option>
+                    <option value="modGain2">Mod 2: Gain</option>
+                    <option value="modFreq3">Mod 3: Frequency</option>
+                    <option value="modGain3">Mod 3: Gain</option>
+                    <option value="modFreq4">Mod 4: Frequency</option>
+                    <option value="modGain4">Mod 4: Gain</option>
+                    <option value="modFreq5">Mod 5: Frequency</option>
+                    <option value="modGain5">Mod 5: Gain</option>
+                </select>
+            </div>
+            <div class="modRow">
+                <select class="modTypeSelect" id="modTypeSelect2">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+                <div class="modFreqKnob" id="modFreqKnob2"></div>
+                <div class="modGainKnob" id="modGainKnob2"></div>
+                <select class="modDestSelect" id="modSelect2">
+                    <option value="none">No Connection</option>
+                    <option value="oscDetune">Synth: Detune</option>
+                    <option value="oscGain">Synth: Gain</option>
+                    <option value="filterFreq">Filter: Frequency</option>
+                    <option value="filterQ">Filter: Q</option>
+                    <option value="filterLFOSpeed">Filter LFO: Speed</option>
+                    <option value="filterLFOGain">Filter LFO: Gain</option>
+                    <option value="delayTime">FX: Delay Time</option>
+                    <option value="reverb">FX: Reverb</option>
+                    <option value="modFreq1">Mod 1: Frequency</option>
+                    <option value="modGain1">Mod 1: Gain</option>
+                    <option value="modFreq3">Mod 3: Frequency</option>
+                    <option value="modGain3">Mod 3: Gain</option>
+                    <option value="modFreq4">Mod 4: Frequency</option>
+                    <option value="modGain4">Mod 4: Gain</option>
+                    <option value="modFreq5">Mod 5: Frequency</option>
+                    <option value="modGain5">Mod 5: Gain</option>
+                </select>
+            </div>
+            <div class="modRow">
+                <select class="modTypeSelect" id="modTypeSelect3">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+                <div class="modFreqKnob" id="modFreqKnob3"></div>
+                <div class="modGainKnob" id="modGainKnob3"></div>
+                <select class="modDestSelect" id="modSelect3">
+                    <option value="none">No Connection</option>
+                    <option value="oscDetune">Synth: Detune</option>
+                    <option value="oscGain">Synth: Gain</option>
+                    <option value="filterFreq">Filter: Frequency</option>
+                    <option value="filterQ">Filter: Q</option>
+                    <option value="filterLFOSpeed">Filter LFO: Speed</option>
+                    <option value="filterLFOGain">Filter LFO: Gain</option>
+                    <option value="delayTime">FX: Delay Time</option>
+                    <option value="reverb">FX: Reverb</option>
+                    <option value="modFreq1">Mod 1: Frequency</option>
+                    <option value="modGain1">Mod 1: Gain</option>
+                    <option value="modFreq2">Mod 2: Frequency</option>
+                    <option value="modGain2">Mod 2: Gain</option>
+                    <option value="modFreq4">Mod 4: Frequency</option>
+                    <option value="modGain4">Mod 4: Gain</option>
+                    <option value="modFreq5">Mod 5: Frequency</option>
+                    <option value="modGain5">Mod 5: Gain</option>
+                </select>
+            </div>
+            <div class="modRow">
+                <select class="modTypeSelect" id="modTypeSelect4">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+                <div class="modFreqKnob" id="modFreqKnob4"></div>
+                <div class="modGainKnob" id="modGainKnob4"></div>
+                <select class="modDestSelect" id="modSelect4">
+                    <option value="none">No Connection</option>
+                    <option value="oscDetune">Synth: Detune</option>
+                    <option value="oscGain">Synth: Gain</option>
+                    <option value="filterFreq">Filter: Frequency</option>
+                    <option value="filterQ">Filter: Q</option>
+                    <option value="filterLFOSpeed">Filter LFO: Speed</option>
+                    <option value="filterLFOGain">Filter LFO: Gain</option>
+                    <option value="delayTime">FX: Delay Time</option>
+                    <option value="reverb">FX: Reverb</option>
+                    <option value="modFreq1">Mod 1: Frequency</option>
+                    <option value="modGain1">Mod 1: Gain</option>
+                    <option value="modFreq2">Mod 2: Frequency</option>
+                    <option value="modGain2">Mod 2: Gain</option>
+                    <option value="modFreq3">Mod 3: Frequency</option>
+                    <option value="modGain3">Mod 3: Gain</option>
+                    <option value="modFreq5">Mod 5: Frequency</option>
+                    <option value="modGain5">Mod 5: Gain</option>
+                </select>
+            </div>
+            <div class="modRow">
+                <select class="modTypeSelect" id="modTypeSelect5">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                </select>
+                <div class="modFreqKnob" id="modFreqKnob5"></div>
+                <div class="modGainKnob" id="modGainKnob5"></div>
+                <select class="modDestSelect" id="modSelect5">
+                    <option value="none">No Connection</option>
+                    <option value="oscDetune">Synth: Detune</option>
+                    <option value="oscGain">Synth: Gain</option>
+                    <option value="filterFreq">Filter: Frequency</option>
+                    <option value="filterQ">Filter: Q</option>
+                    <option value="filterLFOSpeed">Filter LFO: Speed</option>
+                    <option value="filterLFOGain">Filter LFO: Gain</option>
+                    <option value="delayTime">FX: Delay Time</option>
+                    <option value="reverb">FX: Reverb</option>
+                    <option value="modFreq1">Mod 1: Frequency</option>
+                    <option value="modGain1">Mod 1: Gain</option>
+                    <option value="modFreq2">Mod 2: Frequency</option>
+                    <option value="modGain2">Mod 2: Gain</option>
+                    <option value="modFreq3">Mod 3: Frequency</option>
+                    <option value="modGain3">Mod 3: Gain</option>
+                    <option value="modFreq4">Mod 4: Frequency</option>
+                    <option value="modGain4">Mod 4: Gain</option>
+                </select>
+            </div>
+        </div>
+        <div class="sequenceController">
+            <div class="header">
+                <div id="sequencerTitle">Sequencer</div>
+                <input id="sequenceOn" type="checkbox">
+                <label id="sequenceOnLabel" for="sequenceOn">On/Off</label>
+                <select id="sequenceModeSelect">
+                    <option value="normal">Normal</option>
+                    <option value="up">Up</option>
+                    <option value="down">Down</option>
+                    <option value="random">Random</option>
+                </select>
+                <label id="sequenceModeSelectLabel" for="sequenceModeSelect">Mode</label>
+                <button id="clearButton">Clear</button>
+                <input type="checkbox" id="sequenceHold">
+                <label id="sequenceHoldLabel" for="sequenceHold">Hold</label>
+            </div>
+            <div id="sequenceSpeedRow">
+                <input id="textInput" type="text" value="">
+                <button id="textInputOK">OK</button>
+                <div id="sequenceSpeed"></div>
+                <div id="sequenceSpeedLabel">Speed (ms)</div>
+            </div>
+            <div id="masterGainRow">
+                <div id="masterGainSlider"></div>
+                <div id="masterGainLabel">Master Gain</div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
