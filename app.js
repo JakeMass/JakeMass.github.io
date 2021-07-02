@@ -584,6 +584,8 @@ window.onload = function () {
         parseSequence(textInput.value);
         playSequence();
     }
+
+    context.resume();
 }
 
 function onMIDIInit(midiAccess) {
